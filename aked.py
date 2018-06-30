@@ -241,7 +241,7 @@ while True:
                                     targets.append(x["M"])
                                 for target in targets:
                                     if target not in renBot:
-                                        random.choice(KCML).kickoutFromGroup(receiver, [target])
+                                        random.choice(Bot).kickoutFromGroup(receiver, [target])
                             elif text.lower().startswith("pkick"):
                                 pset = text.split(":")
                                 pk = text.replace(pset[0] + ":","")
