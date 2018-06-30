@@ -19,31 +19,36 @@ except:
 assistchannel = LineChannel(assist)
 assistpoll = LinePoll(assist)
 #==================BOT LOGIN SUCCESS===============
+try:
+    assist1 = LineClient(authToken='auth_')
+except:
+    assist1 = LineClient()
+assistchannel = LineChannel(assist1)
+assistpoll = LinePoll(assist1)
+#==================BOT LOGIN SUCCESS===============
 
 #=================   BOT SETUP  ==================
 clientMid = client.getProfile().mid
 assistMid = assist.getProfile().mid
-renBot = [clientMid,assistMid]
-KCML = [client,assist]
+assist1Mid = assist1.getProfile().mid
+akedBOT = [clientMid,assistMid,assist1Mid]
+Bot = [client,assist,assist1]
 
-vol = """Simple Command:
+vol = """
+[Login SB + Assist]
 
-[+] ? <- Look command
-[+] 1 <- Look your contact
-[+] 2 <- Look speedbot
-[+] 3 <- Tagall
-[+] . <- Joined assist
-[+] , <- Assist out
-[+] 9 <- Check reader
-[+] 0 <- Stop check reader
-[+] ; <- Restart bot
+- Respon
+- Speed
+- Tagall
+- Masuk
+- Keluar
+- Sider On
+- Sider Off
 
-Protect command:
-
-[#] Pkick:[on/off] <- Protectkick
-[#] ! @tag <- Kick with tag
-
-[ S E L F B O T ]"""
+[Aktif Protect Grup]
+⛑️ Pkick:[on/off] <- Protectkick
+⛑️ ! @tag <- Kick with tag
+"""
 
 protect = {
     "kick":{}
@@ -65,40 +70,52 @@ while True:
           for op in ops:
             if op.type == 19:
                 if op.param1 in protect["kick"]:
-                    if op.param2 in renBot:
+                    if op.param2 in akedBOT:
                         pass
                     else:
                         try:
-                            random.choice(KCML).kickoutFromGroup(op.param1, [op.param2])
+                            random.choice(Bot).kickoutFromGroup(op.param1, [op.param2])
                         except:
                             client.kickoutFromGroup(op.param1, [op.param2])
                 else:
                     pass
             if op.type == 19:
                 if op.param3 in clientMid:
-                    if op.param2 not in renBot:
-                        assist.kickoutFromGroup(op.param1, [op.param2])
-                        P = assist.getGroup(op.param1)
+                    if op.param2 not in akedBOT:
+                        random.choice(Bot).kickoutFromGroup(op.param1, [op.param2])
+                        P = random.choice(Bot).getGroup(op.param1)
                         P.preventedJoinByTicket = False
-                        assist.updateGroup(P)
+                        random.choice(Bot).updateGroup(P)
                         invsend = 0
-                        Ticket = assist.reissueGroupTicket(op.param1)
+                        Ticket = random.choice(Bot).reissueGroupTicket(op.param1)
                         client.acceptGroupInvitationByTicket(op.param1, Ticket)
-                        A = assist.getGroup(op.param1)
+                        A = random.choice(Bot).getGroup(op.param1)
                         A.preventedJoinByTicket = False
-                        assist.updateGroup(A)
+                        random.choice(Bot).updateGroup(A)
                 if op.param3 in assistMid:
-                    if op.param2 not in renBot:
-                        client.kickoutFromGroup(op.param1, [op.param2])
-                        P = client.getGroup(op.param1)
+                    if op.param2 not in akedBOT:
+                        random.choice(Bot).kickoutFromGroup(op.param1, [op.param2])
+                        P = random.choice(Bot).getGroup(op.param1)
                         P.preventedJoinByTicket = False
-                        client.updateGroup(P)
+                        random.choice(Bot).updateGroup(P)
                         invsend = 0
-                        Ticket = client.reissueGroupTicket(op.param1)
+                        Ticket = random.choice(Bot).reissueGroupTicket(op.param1)
                         assist.acceptGroupInvitationByTicket(op.param1, Ticket)
-                        A = client.getGroup(op.param1)
+                        A = random.choice(Bot).getGroup(op.param1)
                         A.preventedJoinByTicket = False
-                        client.updateGroup(A)
+                        random.choice(Bot).updateGroup(A)
+                if op.param3 in assist1Mid:
+                    if op.param2 not in akedBOT:
+                        random.choice(Bot).kickoutFromGroup(op.param1, [op.param2])
+                        P = random.choice(Bot).getGroup(op.param1)
+                        P.preventedJoinByTicket = False
+                        random.choice(Bot).updateGroup(P)
+                        invsend = 0
+                        Ticket = random.choice(Bot).reissueGroupTicket(op.param1)
+                        assist1.acceptGroupInvitationByTicket(op.param1, Ticket)
+                        A = random.choice(Bot).getGroup(op.param1)
+                        A.preventedJoinByTicket = False
+                        random.choice(Bot).updateGroup(A)
             if op.type == 25:
                 msg = op.message
                 text = msg.text
@@ -109,69 +126,70 @@ while True:
                 try:
                     if msg.contentType == 0:
                         if msg.toType in [0,2]:
-                            contact = client.getContact(sender)
-                            if text.lower() == '?':
-                                client.sendText(receiver, vol)
-                            elif text.lower() == '1':
-                                client.sendMessage(receiver, None, contentMetadata={'mid': sender}, contentType=13)
-                            elif text.lower() == '2':
+                            contact = assist.getContact(sender)
+                            if text.lower() == 'ked:help':
+                                assist.sendText(receiver, vol)
+                            elif text.lower() == 'respon':
+                                assist.sendText(receiver, "Hadir... ")
+                                assist1.sendText(receiver, "Hadir... ")
+                            elif text.lower() == 'speed':
                                 start = time.time()
-                                client.sendText(receiver, "[ C H E C K ] : [sendText]")
+                                assist.sendText(receiver, "Loading... ")
                                 elapsed_time = time.time() - start
-                                client.sendText(receiver, "[T I M E Response] : \n%s" % (elapsed_time))
-                            elif text.lower() == '3':
-                                group = client.getGroup(receiver)
+                                assist.sendText(receiver, "[Hasil Speed] \n%s" % (elapsed_time))
+                            elif text.lower() == 'tagall':
+                                group = assist.getGroup(receiver)
                                 nama = [contact.mid for contact in group.members]
                                 nm1, nm2, nm3, nm4, nm5, jml = [], [], [], [], [], len(nama)
                                 if jml <= 100:
-                                    client.mention(receiver, nama)
+                                    assist.mention(receiver, nama)
                                 if jml > 100 and jml < 200:
                                     for i in range(0, 100):
                                         nm1 += [nama[i]]
-                                    client.mention(receiver, nm1)
+                                    assist.mention(receiver, nm1)
                                     for j in range(101, len(nama)):
                                         nm2 += [nama[j]]
-                                    client.mention(receiver, nm2)
+                                    assist.mention(receiver, nm2)
                                 if jml > 200 and jml < 300:
                                     for i in range(0, 100):
                                         nm1 += [nama[i]]
-                                    client.mention(receiver, nm1)
+                                    assist.mention(receiver, nm1)
                                     for j in range(101, 200):
                                         nm2 += [nama[j]]
-                                    client.mention(receiver, nm2)
+                                    assist.mention(receiver, nm2)
                                     for k in range(201, len(nama)):
                                         nm3 += [nama[k]]
-                                    client.mention(receiver, nm3)
+                                    assist.mention(receiver, nm3)
                                 if jml > 300 and jml < 400:
                                     for i in range(0, 100):
                                         nm1 += [nama[i]]
-                                    client.mention(receiver, nm1)
+                                    assist.mention(receiver, nm1)
                                     for j in range(101, 200):
                                         nm2 += [nama[j]]
-                                    client.mention(receiver, nm2)
+                                    assist.mention(receiver, nm2)
                                     for k in range(201, len(nama)):
                                         nm3 += [nama[k]]
                                     client.mention(receiver, nm3)
                                     for l in range(301, len(nama)):
                                         nm4 += [nama[l]]
-                                    client.mention(receiver, nm4)
+                                    assist.mention(receiver, nm4)
                                 if jml > 400 and jml < 501:
                                     for i in range(0, 100):
                                         nm1 += [nama[i]]
-                                    client.mention(receiver, nm1)
+                                    assist.mention(receiver, nm1)
                                     for j in range(101, 200):
                                         nm2 += [nama[j]]
-                                    client.mention(receiver, nm2)
+                                    assist.mention(receiver, nm2)
                                     for k in range(201, len(nama)):
                                         nm3 += [nama[k]]
-                                    client.mention(receiver, nm3)
+                                    assist.mention(receiver, nm3)
                                     for l in range(301, len(nama)):
                                         nm4 += [nama[l]]
-                                    client.mention(receiver, nm4)
+                                    assist.mention(receiver, nm4)
                                     for m in range(401, len(nama)):
                                         nm5 += [nama[m]]
-                                    client.mention(receiver, nm5)             
-                            elif text.lower() == '.':
+                                    assist.mention(receiver, nm5)             
+                            elif text.lower() == 'masuk':
                                 try:
                                     G = client.getGroup(receiver)
                                     G.preventedJoinByTicket = False
@@ -179,14 +197,16 @@ while True:
                                     invsend = 0
                                     Ticket = client.reissueGroupTicket(receiver)
                                     assist.acceptGroupInvitationByTicket(receiver, Ticket)
+                                    assist1.acceptGroupInvitationByTicket(receiver, Ticket)
                                     X = client.getGroup(receiver)
                                     X.preventedJoinByTicket = True
                                     client.updateGroup(X)
                                 except Exception as axsd:
                                     print(axsd)
-                            elif text.lower() == ',':
+                            elif text.lower() == 'keluar':
                                 assist.leaveGroup(receiver)
-                            elif text.lower() == '9':
+                                assist1.leaveGroup(receiver)
+                            elif text.lower() == 'sider on':
                                 try:
                                     del cctv['point'][receiver]
                                     del cctv['sidermem'][receiver]
@@ -197,12 +217,12 @@ while True:
                                 cctv['point'][receiver] = msg.id
                                 cctv['sidermem'][receiver] = ""
                                 cctv['cyduk'][receiver]=True
-                            elif text.lower() == '0':
+                            elif text.lower() == 'sider off':
                                 if msg.to in cctv['point']:
                                     cctv['cyduk'][receiver]=False
-                                    client.sendText(receiver, "Check reader off!")
+                                    assist.sendText(receiver, "Check reader off!")
                                 else:
-                                    client.sendText(receiver, "Type 9 to get data siders")
+                                    assist.sendText(receiver, "Type sider on to get data siders")
                             elif text.lower() == ';':
                                 restart_program()
                             elif text.lower().startswith("!"):
@@ -219,28 +239,28 @@ while True:
                                 pk = text.replace(pset[0] + ":","")
                                 if pk == "on":
                                     if receiver in protect["kick"]:
-                                        client.sendText(receiver, "Protect kick already On!")
+                                        assist.sendText(receiver, "Protect kick already On!")
                                     else:
                                         protect["kick"][receiver] = True
-                                        client.sendText(receiver, "Protect kick set On!")
+                                        assist.sendText(receiver, "Protect kick set On!")
                                 if pk == "off":
                                     if receiver in protect["kick"]:
                                         del protect["kick"][receiver]
-                                        client.sendText(receiver, "Protect kick set Off!")
+                                        assist.sendText(receiver, "Protect kick set Off!")
                                     else:
-                                        client.sendText(receiver, "Protect kick already Off!")
+                                        assist.sendText(receiver, "Protect kick already Off!")
                 except Exception as e:
-                    client.log("[SEND_MESSAGE] ERROR : " + str(e))
+                    assist.log("[SEND_MESSAGE] ERROR : " + str(e))
             elif op.type == 55:
                 try:
                     if cctv['cyduk'][op.param1]==True:
                         if op.param1 in cctv['point']:
-                            Name = client.getContact(op.param2).displayName
+                            Name = assist.getContact(op.param2).displayName
                             if Name in cctv['sidermem'][op.param1]:
                                 pass
                             else:
                                 cctv['sidermem'][op.param1] += "\n~ " + Name
-                                client.sendText(op.param1, 'Terbaca oleh: '+Name)
+                                assist.sendText(op.param1, 'Terbaca oleh: '+Name)
                         else:
                             pass
                     else:
