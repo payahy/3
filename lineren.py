@@ -35,19 +35,27 @@ akedBOT = [clientMid,assistMid,assist1Mid]
 Bot = [client,assist,assist1]
 
 vol = """
-[Login SB + Assist]
+[-Menu Help-[Asisst]
 
-- Respon
-- Speed
-- Tagall
-- Masuk
-- Keluar
-- Sider On
-- Sider Off
+-Respon
+-Speed
+-Tagall
+-Masuk
+-Keluar
+-Sider On
+-Sider Off
 
-[Aktif Protect Grup]
-⛑️ Pkick:[on/off] <- Protectkick
-⛑️ ! @tag <- Kick with tag
+[-Aktif Protect Grup-]
+- Pkick:[on/off] <- Protectkick
+- ! @tag <- Kick with tag
+
+[-Info Assist-[Login]
+.. Status : On
+.. Type : Kick Protect
+.. Cooming : FiturNew!
+
+.CreatorID
+https://bit.ly/2J3ywc3
 """
 
 protect = {
@@ -127,7 +135,7 @@ while True:
                     if msg.contentType == 0:
                         if msg.toType in [0,2]:
                             contact = assist.getContact(sender)
-                            if text.lower() == 'ked:help':
+                            if text.lower() == 'help':
                                 assist.sendText(receiver, vol)
                             elif text.lower() == 'respon':
                                 assist.sendText(receiver, "Hadir... ")
