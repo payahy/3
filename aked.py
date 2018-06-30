@@ -240,7 +240,7 @@ while True:
                                 for x in key["MENTIONEES"]:
                                     targets.append(x["M"])
                                 for target in targets:
-                                    if target not in renBot:
+                                    if target not in akedBOT:
                                         random.choice(Bot).kickoutFromGroup(receiver, [target])
                             elif text.lower().startswith("pkick"):
                                 pset = text.split(":")
